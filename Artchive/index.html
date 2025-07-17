@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The ARTchive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="overflow-x-hidden">
+
+    <main id="main-content" class="pb-28 md:pb-8 transition-all duration-300">
+        <header class="text-center p-8 md:p-16">
+            <h1 class="text-8xl md:text-8xl font-bold tracking-tight">The <span>ARTchive</span></h1>
+            <p class="text-lg md:text-xl text-gray-400 mt-2 max-w-2xl mx-auto">A curated collection of moments, inspired by next-generation design.</p>
+        </header>
+                
+        <div id="gallery-grid" class="gallery-grid gap-4 p-4">
+        </div>
+        <div id="loading-indicator" class="text-center p-8">
+            <p>Loading gallery...</p>
+        </div>
+        <div id="downloads-view" class="hidden p-4">
+            <h2 class="text-3xl font-bold mb-4 px-4">Your Downloads</h2>
+            <div id="downloads-grid" class="gallery-grid gap-4"></div>
+            <p id="no-downloads-msg" class="hidden text-center text-gray-400">You haven't downloaded any items yet.</p>
+        </div>
+    </main>
+
+    <div id="lightbox" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center lightbox-fade-in" aria-modal="true" role="dialog">
+        <div class="relative w-full h-full flex items-center justify-center">
+
+            <button id="lightbox-close" class="absolute top-5 right-5 z-20 p-2 text-white bg-black/30 rounded-full hover:bg-white/20 transition-all duration-300" aria-label="Close image view">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+
+           
+            <button id="lightbox-prev" class="hidden md:flex absolute left-5 z-20 p-3 items-center justify-center glass-effect rounded-full hover:bg-white/20 transition-all duration-300 transform hover:scale-105" aria-label="Previous image">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+           
+            <button id="lightbox-next" class="hidden md:flex absolute right-5 z-20 p-3 items-center justify-center glass-effect rounded-full hover:bg-white/20 transition-all duration-300 transform hover:scale-105" aria-label="Next image">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+
+
+            <div class="relative w-full h-full flex items-center justify-center p-4 md:p-16">
+                <img id="lightbox-img" src="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl" alt="Expanded gallery image">
+            </div>
+
+
+            <div class="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-4 p-2 glass-effect rounded-full">
+                <button id="lightbox-download" class="p-3 hover:bg-white/20 rounded-full transition-all duration-300" aria-label="Download image">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </button>
+                <button id="lightbox-share" class="p-3 hover:bg-white/20 rounded-full transition-all duration-300" aria-label="Share image">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="notification-modal" class="fixed top-5 right-5 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg transform translate-x-[150%] transition-transform duration-500 ease-in-out z-[100]">
+        <p id="notification-message"></p>
+    </div>
+
+
+    <nav class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[90%] max-w-sm h-16 glass-effect rounded-2xl z-40">
+        <div class="relative flex items-center justify-around h-full">
+
+                    
+            <button data-view="gallery" class="nav-item z-10 flex flex-col items-center justify-center w-16 h-full text-[#57e2e5] transition-colors duration-300" aria-label="Gallery">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            </button>
+
+            <button data-view="downloads" class="nav-item z-10 flex flex-col items-center justify-center w-16 h-full text-gray-400 transition-colors duration-300" aria-label="Downloads">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span id="download-count" class="absolute top-2 right-2 text-xs bg-blue-500 text-white rounded-full w-4 h-4 flex items-center justify-center hidden">0</span>
+            </button>
+
+            <label for="upload-input" class="nav-item z-10 cursor-pointer flex flex-col items-center justify-center w-16 h-full text-gray-400 transition-colors duration-300" aria-label="Upload image">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"></path><line x1="16" y1="5" x2="22" y2="5"></line><line x1="19" y1="2" x2="19" y2="8"></line><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>
+            </label>
+            <input type="file" id="upload-input" class="hidden" accept="image/*">
+
+            <div class="search-container z-10 flex items-center justify-center">
+                <input type="search" id="search-bar" placeholder="Search..." class="w-0 p-0 opacity-0 bg-transparent border-b-2 border-white/30 transition-all duration-500 ease-in-out focus:outline-none text-white">
+                <button id="search-btn" class="p-2 text-gray-400" aria-label="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
