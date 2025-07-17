@@ -26,12 +26,12 @@
             // --- Initial Setup ---
             async function initializeGallery() {
                 try {
-                    const imageCount = 100;
+                    const imageCount = 300;
                     
                     // Using a seeded random ensures images are consistent between reloads.
                     galleryItems = Array.from({ length: imageCount }, (_, i) => ({
                         id: `gallery-image-${i}`,
-                        src: `https://picsum.photos/seed/${i+1}/1200/720`, // Using picsum.photos for random images
+                        src: `https://picsum.photos/seed/${i+1}/2000/2000`, // Using picsum.photos for random images
                         type: 'image',
                         alt: `random abstract image ${i}`
                     }));
