@@ -31,7 +31,7 @@
                     // Using a seeded random ensures images are consistent between reloads.
                     galleryItems = Array.from({ length: imageCount }, (_, i) => ({
                         id: `gallery-image-${i}`,
-                        src: `https://api.unsplash.com/photos/${i+1}/1920/1080`, // Using picsum.photos for random images
+                        src: `https://api.unsplash.com/photos${i+1}/1920/1080`, // Using picsum.photos for random images
                         type: 'image',
                         alt: `random abstract image ${i}`
                     }));
