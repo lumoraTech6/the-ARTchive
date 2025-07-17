@@ -26,7 +26,7 @@
             // --- Initial Setup ---
           async function initializeGallery() {
     try {
-        const imageCount = 50;
+        const imageCount = 200;
 
         // Generate an array of image URLs, each with a different random seed.
         galleryItems = Array.from({ length: imageCount }, (_, i) => ({
