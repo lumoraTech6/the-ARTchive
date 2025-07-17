@@ -24,30 +24,31 @@
             let activeView = 'gallery'; // Default active view
 
             // --- Initial Setup ---
-            async function initializeGallery() {
-                try {
-                    const imageCount = 50;
-                    
-                    // Using a seeded random ensures images are consistent between reloads.
-                    galleryItems = Array.from({ length: imageCount }, (_, i) => ({
-                        id: `gallery-image-${i}`,
-                        src: `https://picsum.photos/1920/1020`, // Using picsum.photos for random images
-                        type: 'image',
-                        alt: `random abstract image ${i}`
-                    }));
+          async function initializeGallery() {
+    try {
+        const imageCount = 50;
 
-                    const uploadedImages = JSON.parse(localStorage.getItem('uploadedGalleryImages')) || [];
-                    galleryItems.unshift(...uploadedImages);
+        // Generate an array of image URLs, each with a different random seed.
+        galleryItems = Array.from({ length: imageCount }, (_, i) => ({
+            id: `gallery-image-${i}`,
+            src: `https://picsum.photos/1920/1020?random=${Math.random()}`, // Add random seed
+            type: 'image',
+            alt: `random abstract image ${i}`
+        }));
 
-                    renderGallery(galleryItems);
-                    updateDownloadCounter();
-                } catch (error) {
-                    console.error("Failed to initialize gallery:", error);
-                    galleryGrid.innerHTML = '<p class="text-red-500 col-span-full text-center">Could not load images. Please try again later.</p>';
-                } finally {
-                    loadingIndicator.style.display = 'none';
-                }
-            }
+        const uploadedImages = JSON.parse(localStorage.getItem('uploadedGalleryImages')) || [];
+        galleryItems.unshift(...uploadedImages);
+
+        renderGallery(galleryItems);
+        updateDownloadCounter();
+    } catch (error) {
+        console.error("Failed to initialize gallery:", error);
+        galleryGrid.innerHTML = '<p class="text-red-500 col-span-full text-center">Could not load images. Please try again later.</p>';
+    } finally {
+        loadingIndicator.style.display = 'none';
+    }
+}
+
 
             // --- Rendering Functions ---
             function createGalleryCard(item, index) {
