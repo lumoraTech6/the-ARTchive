@@ -31,7 +31,7 @@
                     // Using a seeded random ensures images are consistent between reloads.
                     galleryItems = Array.from({ length: imageCount }, (_, i) => ({
                         id: `gallery-image-${i}`,
-                        src: `https://picsum.photos/seed/${i+1}/4000/1320`, // Using picsum.photos for random images
+                        src: `https://picsum.photos/seed/${i+1}/3840/2160`, // Using picsum.photos for random images
                         type: 'image',
                         alt: `random abstract image ${i}`
                     }));
